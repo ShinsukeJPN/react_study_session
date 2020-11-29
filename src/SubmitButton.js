@@ -7,7 +7,7 @@ class SubmitButton extends React.Component {
 
   render() {
     return (
-      <button type="submit">ツイート</button>
+      <button type="submit">{this.props.value}</button>
     );
   }
 }
