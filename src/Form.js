@@ -4,6 +4,12 @@ import TweetList from './TweetList';
 import TweetItem from './TweetItem';
 
 class Form extends React.Component {
+  form = {
+    marginLeft: "auto",
+    marginRight: "auto",
+    width: "300px",
+  }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -35,7 +41,7 @@ class Form extends React.Component {
   render() {
     let data = this.state.data.reverse();
     return (
-      <div>
+      <div style={this.form}>
         <form onSubmit={this.onSubmit}>
           <textarea onChange={this.onChange} requeired="true" maxLength="140"/>
           <SubmitButton value="ツイート"/>
