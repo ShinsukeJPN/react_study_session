@@ -17,6 +17,7 @@ class Form extends React.Component {
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.deleteItem = this.deleteItem.bind(this);
+    this.copyItem = this.copyItem.bind(this);
   }
 
   onChange(e){
@@ -49,6 +50,10 @@ class Form extends React.Component {
     }));
   }
 
+  copyItem(e){
+
+  }
+
   render() {
     return (
       <div style={this.form}>
@@ -58,7 +63,11 @@ class Form extends React.Component {
         </form>
 
         {this.state.data.map((value, i)=>(
-         <li key={i}>{value.tweet} / {value.timeStamp}<button onClick={this.deleteItem} data-id={i}>{i}を削除</button></li>
+         <li key={i}>
+           {value.tweet} / {value.timeStamp}
+           <button onClick={this.deleteItem} data-id={i}>削除</button>
+           <button onClick={this.copyItem} data-text={value.tweet}>クリップボードにコピー</button>
+         </li>
          ))}
       </div>
     );
