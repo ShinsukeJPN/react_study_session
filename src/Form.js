@@ -1,6 +1,5 @@
 import React from 'react';
 import SubmitButton from './SubmitButton';
-import TweetList from './TweetList';
 import TweetItem from './TweetItem';
 
 class Form extends React.Component {
@@ -17,6 +16,7 @@ class Form extends React.Component {
     };
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.deleteItem = this.deleteItem.bind(this);
   }
 
   onChange(e){
@@ -25,30 +25,40 @@ class Form extends React.Component {
 
   onSubmit(e){
     let d = new Date(),
+        second = '' + d.getSeconds(),
         min  = '' + d.getMinutes(),
         hour = '' + d.getHours(),
         month = '' + (d.getMonth() + 1),
         day = '' + d.getDate(),
         year = d.getFullYear();
-    let formatted_date = [year, month, day].join('-') + ' ' + hour + ':' + min;
+    let formatted_date = [year, month, day].join('-') + ' ' + hour + ':' + min + ':' + second;
 
     this.setState((state)=>({
-      data: state.data.concat({tweet: this.input, timeStamp: formatted_date}),
+      data: state.data.concat({tweet: this.input, timeStamp: formatted_date}).reverse()
+      
     }));
+
     e.preventDefault();
   }
 
+  deleteItem(e){
+    let id = e.currentTarget.getAttribute('data-id');
+    let deleted_data = this.state.data.splice(id, 1)
+    this.setState((state)=>({
+      data: state.data.reverse()
+    }));
+  }
+
   render() {
-    let data = this.state.data.reverse();
     return (
       <div style={this.form}>
         <form onSubmit={this.onSubmit}>
-          <textarea onChange={this.onChange} requeired="true" maxLength="140"/>
+          <textarea onChange={this.onChange} required="true" maxLength="140" />
           <SubmitButton value="ツイート"/>
         </form>
-        
-        {data.map((value)=>(
-         <TweetItem key={value.id} value={value.tweet} time={value.timeStamp}/>
+
+        {this.state.data.map((value, i)=>(
+         <li key={i}>{value.tweet} / {value.timeStamp}<button onClick={this.deleteItem} data-id={i}>{i}を削除</button></li>
          ))}
       </div>
     );
