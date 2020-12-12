@@ -1,6 +1,10 @@
 import React from 'react';
 import SubmitButton from './SubmitButton';
-import TweetItem from './TweetItem';
+import favImage from './images/favorited.png';
+import unFavImage from './images/unfavorited.png';
+
+const favSrcPath = './images/favorited.png';
+const unFavSrcPath = './images/unfavorited.png';
 
 class Form extends React.Component {
   form = {
@@ -9,15 +13,22 @@ class Form extends React.Component {
     width: "300px",
   }
 
+  fav = {
+    width: "20px",
+    height: "20px"
+  }
+
   constructor(props) {
     super(props);
     this.state = {
       data: []
     };
+
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.deleteItem = this.deleteItem.bind(this);
-    this.copyItem = this.copyItem.bind(this);
+    this.copyClipBoardItem = this.copyClipBoardItem.bind(this);
+    this.favoriteItem = this.favoriteItem.bind(this);
   }
 
   onChange(e){
@@ -35,7 +46,7 @@ class Form extends React.Component {
     let formatted_date = [year, month, day].join('-') + ' ' + hour + ':' + min + ':' + second;
 
     this.setState((state)=>({
-      data: state.data.concat({tweet: this.input, timeStamp: formatted_date}).reverse()
+      data: state.data.concat({tweet: this.input, timeStamp: formatted_date, isFavorited: false}).reverse()
       
     }));
 
@@ -50,8 +61,17 @@ class Form extends React.Component {
     }));
   }
 
-  copyItem(e){
+  copyClipBoardItem(e){
 
+  }
+
+  favoriteItem(e){
+    let id = e.currentTarget.getAttribute('data-id');
+    const item = this.state.data.slice();
+    item[id].isFavorited = true
+    this.setState((state)=>({
+      data: item
+    }));
   }
 
   render() {
@@ -66,7 +86,12 @@ class Form extends React.Component {
          <li key={i}>
            {value.tweet} / {value.timeStamp}
            <button onClick={this.deleteItem} data-id={i}>削除</button>
-           <button onClick={this.copyItem} data-text={value.tweet}>クリップボードにコピー</button>
+           <button onClick={this.copyClipBoardItem} data-text={value.tweet}>クリップボードにコピー</button>
+           {this.isFavorited ?
+              <img src={favSrcPath} data-id={i} style={this.fav} onClick={this.favoriteItem}/>
+            :
+              <img src={unFavSrcPath} data-id={i} style={this.fav} onClick={this.favoriteItem}/>
+           }
          </li>
          ))}
       </div>
