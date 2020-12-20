@@ -2,6 +2,7 @@ import React from 'react';
 import SubmitButton from './SubmitButton';
 import favImage from './images/favorited.png';
 import unFavImage from './images/unfavorited.png';
+import './Form.css';
 
 class Form extends React.Component {
   form = {
@@ -28,10 +29,9 @@ class Form extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: [],
+      tweets: [],
       text: '',
-      favList: [],
-      replyText: ''
+      favList: []
     };
 
     this.onChange                  = this.onChange.bind(this);
@@ -51,7 +51,7 @@ class Form extends React.Component {
     }));
   }
 
-  // Tweet
+  // tweets
   onSubmit(e){
     let d = new Date(),
         second = '' + d.getSeconds(),
@@ -60,12 +60,12 @@ class Form extends React.Component {
         month = '' + (d.getMonth() + 1),
         day = '' + d.getDate(),
         year = d.getFullYear();
-    let formatted_date = [year, month, day].join('-') + ' ' + hour + ':' + min + ':' + second;
+    let formattedDate = [year, month, day].join('-') + ' ' + hour + ':' + min + ':' + second;
 
-    const tweetList = this.state.data.concat({tweet: this.state.text, timeStamp: formatted_date, isFavorited: false, replies: []});
+    const tweetList = this.state.tweets.concat({tweet: this.state.text, timeStamp: formattedDate, isFavorited: false, replies: [], replyText: ""});
 
     this.setState((state)=>({
-      data: tweetList,
+      tweets: tweetList,
       text: ''
     }));
 
@@ -75,9 +75,9 @@ class Form extends React.Component {
   // Delete
   deleteItem(e){
     let id = e.currentTarget.getAttribute('data-id');
-    this.state.data.splice(id, 1)
+    this.state.tweets.splice(id, 1)
     this.setState((state)=>({
-      data: state.data.reverse()
+      tweets: state.tweets.reverse()
     }));
   }
 
@@ -100,10 +100,10 @@ class Form extends React.Component {
 
   favoriteItem(e){
     let id = e.currentTarget.getAttribute('data-id');
-    const items = this.state.data.slice();
+    const items = this.state.tweets.slice();
     items[id].isFavorited = !items[id].isFavorited
     this.setState((state)=>({
-      data: items,
+      tweets: items,
     }));
 
     this.setFavList(items);
@@ -120,40 +120,47 @@ class Form extends React.Component {
     }
   }
 
+  // Reply form
   switchVisibilityReplyForm(e){
     let target_form = e.currentTarget.children("form");
     target_form.className = "show"
   }
 
   onReplyChange(e){
-    this.setState((state)=>({
-      replyText: e.target.value
-    }));
+    let id = e.currentTarget.getAttribute('data-id');
+    // let text = e.target.value;
+    // this.state.tweets[id].replyText = text;
+    // this.setState((state)=>({
+      // tweets: state.tweets
+    // }));
+    this.text = e.target.value;
   }
 
   onReplySubmit(e){
+    let d = new Date(),
+    second = '' + d.getSeconds(),
+    min  = '' + d.getMinutes(),
+    hour = '' + d.getHours(),
+    month = '' + (d.getMonth() + 1),
+    day = '' + d.getDate(),
+    year = d.getFullYear();
+    let formattedDate = [year, month, day].join('-') + ' ' + hour + ':' + min + ':' + second;
+
     let id = e.currentTarget.getAttribute('data-id')
-    console.log(this.state.data);
+    let ex_replies = this.state.tweets[id].replies;
+    ex_replies.push({text: this.text, timeStamp: formattedDate});
+    // let tweets = this.state.tweets[id].replies.push(ex_replies)
     this.setState((state)=>({
-      data: "",
-      replyText: ''
+      tweets: state.tweets
     }));
+
+    this.state.tweets[id].replyText = '';
 
     e.preventDefault();
 
   }
 
-
-//   let d = new Date(),
-//   second = '' + d.getSeconds(),
-//   min  = '' + d.getMinutes(),
-//   hour = '' + d.getHours(),
-//   month = '' + (d.getMonth() + 1),
-//   day = '' + d.getDate(),
-//   year = d.getFullYear();
-// let formatted_date = [year, month, day].join('-') + ' ' + hour + ':' + min + ':' + second;
-
-
+  // JSX rendering
   render() {
     return (
       <div style={this.form}>
@@ -162,28 +169,29 @@ class Form extends React.Component {
           <SubmitButton value="ツイート"/>
         </form>
 
-        {this.state.data.map((value, i)=>(
-         <li key={i}>
-           {value.tweet} / {value.timeStamp} {i}
+        {this.state.tweets.map((value, i)=>(
+         <ul key={i} className="list_item">
+           {value.tweet} / {value.timeStamp}
            <button onClick={this.deleteItem} data-id={i}>削除</button>
-           <button onClick={this.copyClipBoardItem} data-text={value.tweet}>クリップボードにコピー</button>
+           <button onClick={this.copyClipBoardItem} data-text={value.tweet}>クリップ</button>
+           リプ{value.replies.length}
            {value.isFavorited ?
               <img src={favImage} data-id={i} style={this.fav} onClick={this.favoriteItem}/>
             :
               <img src={unFavImage} data-id={i} style={this.fav} onClick={this.favoriteItem}/>
            }
              {value.replies.map((reply, ri)=>(
-               <li>
-                 {reply}
+               <li key={"reply_" + ri}>
+                 {reply.text} / {reply.timeStamp}
                </li>
              ))}
-          {/* <button onClick={this.switchVisibilityReplyForm} data-id={i}>リプ */}
+          <button onClick={this.switchVisibilityReplyForm} data-id={i}>リプ</button>
             <form onSubmit={this.onReplySubmit} data-id={i}>
-              <textarea onChange={this.onReplyChange} required="true" maxLength="140" value={this.state.replyText}　key={i}/>
+              <textarea onChange={this.onReplyChange} data-id={i} required="true" maxLength="140" key={i}/>
+              {/* <textarea onChange={this.onReplyChange} data-id={i} required="true" maxLength="140" value={this.state.tweets[i].replyText} key={i}/> */}
               <SubmitButton value="リプ"/>
             </form>
-          {/* </button> */}
-         </li>
+         </ul>
          )).reverse()}
 
         <div style={this.favoriteList}>
