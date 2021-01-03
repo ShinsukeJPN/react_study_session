@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import DelButton from './DelButton'
 
 class Item extends Component{
   form = {
@@ -27,9 +28,9 @@ class Item extends Component{
     return (
     <ul className="list_item">
     {this.props.value.tweet} / {this.props.value.timeStamp}
-    {/* <button onClick={this.deleteItem} data-id={i}>削除</button>
-    <button onClick={this.copyClipBoardItem} data-text={value.tweet}>クリップ</button>
-    リプ{value.replies.length} */}
+    <DelButton value="削除"/>
+    {/* <button onClick={this.copyClipBoardItem} data-text={value.tweet}>クリップ</button> */}
+    {/* リプ{value.replies.length} */}
     {/* {value.isFavorited ?
        <img src={favImage} data-id={i} style={this.fav} onClick={this.favoriteItem}/>
      :

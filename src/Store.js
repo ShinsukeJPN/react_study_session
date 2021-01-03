@@ -23,7 +23,7 @@ export function tweetReducer(state = initData, action){
   }
 }
 
-// Add Tweet Reducer
+// Add Tweet Reducer // action.type = "ADD", action.message is input value
 function addReduce(state, action){
   let d = new Date(),
   second = '' + d.getSeconds(),
@@ -36,10 +36,11 @@ function addReduce(state, action){
   let formattedDate = [year, month, day].join('-') + ' ' + hour + ':' + min + ':' + second;
 
   let tweetList = state.tweets.slice();
-  tweetList.concat({tweet: action.text, timeStamp: formattedDate, isFavorited: false});
-
+  tweetList.unshift({tweet: action.text, timeStamp: formattedDate, isFavorited: false});
+console.log(tweetList);
   return {
     tweets: tweetList,
+    text: '',
     mode: 'default',
     favList: []
   }
@@ -50,7 +51,7 @@ function deleteReduce(state, action){
   let tweetList = state.tweets.slice();
   tweetList.splice(action.index, 1);
   return {
-    tweets: tweetList.reverse(),
+    tweets: tweetList,
     message: ''
   }
 }

@@ -1,6 +1,6 @@
-import React,{ Componetn } from 'react';
+import React,{ Component } from 'react';
 import { connect } from 'react-redux';
-import { delTweet } from './Store';
+import { deleteTweet } from './Store';
 
 class DelButton extends Component{
   constructor(props){
@@ -10,13 +10,13 @@ class DelButton extends Component{
 
   doAction(e){
     e.preventDefault();
-    let action = addTweet(this.props.index);
+    let action = deleteTweet(this.props.index);
     this.props.dispatch(action);  
   }
 
   render(){
     return(
-      <button onClick={this.doAction} value={this.props.index}>削除</button>
+    <button onClick={this.doAction} value={this.props.index}>{this.props.value}</button>
     )
   }
 }

@@ -20,31 +20,31 @@ class AddForm extends Component {
     this.doAction = this.doAction.bind(this);
   }
 
-doChange(e){
-  this.setState({
-    text: e.target.value
-  });
-}
+  doChange(e){
+    this.setState({
+      text: e.target.value
+    });
+  }
 
-doAction(e){
-  e.preventDefault();
-  let action = addTweet(this.state.text);
-  this.props.dispatch(action);
-  this.setState({
-    text: ''
-  });
-}
+  doAction(e){
+    e.preventDefault();
+    let action = addTweet(this.state.text);
+    this.props.dispatch(action);
+    this.setState({
+      text: ''
+    });
+  }
 
-render(){
-  return(
-    <div style={this.form}>
-      <form onSubmit={this.doAction}>
-        <textarea onChange={this.doChange} required="true" maxLength="140" value={this.state.text}/>
-        <SubmitButton value="ツイート"/>
-      </form>
-    </div>
-  );
-}
+  render(){
+    return(
+      <div style={this.form}>
+        <form onSubmit={this.doAction}>
+          <textarea onChange={this.doChange} required="true" maxLength="140" value={this.state.text}/>
+          <SubmitButton value="ツイート"/>
+        </form>
+      </div>
+    );
+  }
 }
 
 export default connect((state)=>state)(AddForm);
