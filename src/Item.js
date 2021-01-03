@@ -1,14 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import DelButton from './DelButton'
+import { favoriteTweet } from './Store';
+import favImage from './images/favorited.png';
+import unFavImage from './images/unfavorited.png';
 
 class Item extends Component{
-  form = {
-    marginLeft: "auto",
-    marginRight: "auto",
-    width: "300px",
-  }
-
   fav = {
     width: "20px",
     height: "20px"
@@ -24,32 +21,33 @@ class Item extends Component{
     display: "none"
   }
 
+  constructor(props){
+    super(props)
+    this.favAction = this.favAction.bind(this);
+  }
+
+  favAction(e){
+    let action = favoriteTweet(this.props.index);
+    this.props.dispatch(action);
+    this.state = {
+      index: 0
+    }
+  }
+
   render(){
+    console.log(this.props);
     return (
     <ul className="list_item">
-    {this.props.value.tweet} / {this.props.value.timeStamp}
-    <DelButton value="削除"/>
+    {this.props.value.tweet} / {this.props.value.timeStamp} / {this.props.value.isFavorited}
+    <DelButton value="削除" index={this.props.index}/>
+    
     {/* <button onClick={this.copyClipBoardItem} data-text={value.tweet}>クリップ</button> */}
-    {/* リプ{value.replies.length} */}
-    {/* {value.isFavorited ?
-       <img src={favImage} data-id={i} style={this.fav} onClick={this.favoriteItem}/>
-     :
-       <img src={unFavImage} data-id={i} style={this.fav} onClick={this.favoriteItem}/>
-    } */}
-   {/* <button onClick={this.switchVisibilityReplyForm} data-id={i}>リプ</button>
-     <form onSubmit={this.onReplySubmit} data-id={i}>
-       <textarea onChange={this.onReplyChange} data-id={i} required="true" maxLength="140" key={i}/>
-       {/* <textarea onChange={this.onReplyChange} data-id={i} required="true" maxLength="140" value={this.state.tweets[i].replyText} key={i}/> */}
-       {/* <SubmitButton value="リプ"/> */}
+      {this.props.value.isFavorited ?
+        <img src={favImage} index={this.props.index} style={this.fav} onClick={this.favAction}/>
+      :
+        <img src={unFavImage} index={this.props.index} style={this.fav} onClick={this.favAction}/>
+      }
     </ul>
-  //   <div style={this.favoriteList}>
-  //   <p>お気に入り</p>
-  //   {this.state.favList.map((value, i)=>(
-  //     <li key={i}>
-  //       {value.tweet}
-  //     </li>
-  //   ))}
-  // </div>
     );
   }
 }

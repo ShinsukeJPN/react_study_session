@@ -9,20 +9,26 @@ class Tweet extends Component {
     let n = 0;
     switch (this.props.mode){
       case 'default':
-        tweets = this.props.tweets.map((value)=>(
-          <Item key={n++} value={value} index={n++} />
+        tweets = this.props.tweets.map((value, i)=>(
+          <Item key={n++} value={value} index={i} />
         ));
       break;
 
       case 'delete':
-        tweets = this.props.tweets.map((value)=>(
-          <Item key={n++} value={value} index={n++} />
+        tweets = this.props.tweets.map((value, i)=>(
+          <Item key={n++} value={value} index={i} />
+        ));
+      break;
+
+      case 'favorite':
+        tweets = this.props.tweets.map((value, i)=>(
+          <Item key={n++} value={value} index={i} />
         ));
       break;
 
       default:
-      tweets = this.props.tweets.map((value)=>(
-        <Item key={n++} value={value} index={n++} />
+      tweets = this.props.tweets.map((value, i)=>(
+        <Item key={n++} value={value} index={i} />
       ));
     };
 

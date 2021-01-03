@@ -37,7 +37,6 @@ function addReduce(state, action){
 
   let tweetList = state.tweets.slice();
   tweetList.unshift({tweet: action.text, timeStamp: formattedDate, isFavorited: false});
-console.log(tweetList);
   return {
     tweets: tweetList,
     text: '',
@@ -52,19 +51,16 @@ function deleteReduce(state, action){
   tweetList.splice(action.index, 1);
   return {
     tweets: tweetList,
-    message: ''
   }
 }
 
 // Favorite Tweet Reducer
 function favoriteReduce(state, action){
   let id = action.index;
-  let items = state.tweets.slice();
-  items[id].isFavorited = !items[id].isFavorited
-  setFavList(items);
+  let tweetList = state.tweets.slice();
+  tweetList[id].isFavorited = !tweetList[id].isFavorited
   return {
-    tweets: items,
-    mode: 'default',
+    tweets: tweetList,
     favList: []
   }
 }
@@ -119,7 +115,7 @@ export function deleteTweet(index){
 export function favoriteTweet(index){
   return {
     type: 'FAVORITE',
-    text: index
+    index: index
   }
 }
 

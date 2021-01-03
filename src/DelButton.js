@@ -10,13 +10,14 @@ class DelButton extends Component{
 
   doAction(e){
     e.preventDefault();
+    console.log(this.props.index);
     let action = deleteTweet(this.props.index);
     this.props.dispatch(action);  
   }
 
   render(){
     return(
-    <button onClick={this.doAction} value={this.props.index}>{this.props.value}</button>
+    <button onClick={this.doAction} index={this.props.index}>{this.props.value}</button>
     )
   }
 }
