@@ -1,10 +1,21 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import SubmitButton from './SubmitButton';
 import favImage from './images/favorited.png';
 import unFavImage from './images/unfavorited.png';
 import './Form.css';
 
+function mappingState(state){
+  return state;
+}
+
 class Form extends React.Component {
+  const tweet = {
+    tweets: [],
+    text: "",
+    favList: []
+  }
+
   form = {
     marginLeft: "auto",
     marginRight: "auto",
