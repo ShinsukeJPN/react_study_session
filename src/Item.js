@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import DelButton from './DelButton'
 import { favoriteTweet } from './Store';
+import { clipboardTweet } from './Store'
 import favImage from './images/favorited.png';
 import unFavImage from './images/unfavorited.png';
 
@@ -24,6 +25,7 @@ class Item extends Component{
   constructor(props){
     super(props)
     this.favAction = this.favAction.bind(this);
+    this.copyClipBoardItem = this.copyClipBoardItem.bind(this);
   }
 
   favAction(e){
@@ -34,14 +36,21 @@ class Item extends Component{
     }
   }
 
+  copyClipBoardItem(e){
+    let action = clipboardTweet(this.props.value.tweet);
+    this.props.dispatch(action);
+    this.state = {
+      text: this.props.text
+    }
+  }
+
   render(){
-    console.log(this.props);
     return (
     <ul className="list_item">
     {this.props.value.tweet} / {this.props.value.timeStamp} / {this.props.value.isFavorited}
     <DelButton value="削除" index={this.props.index}/>
     
-    {/* <button onClick={this.copyClipBoardItem} data-text={value.tweet}>クリップ</button> */}
+    <button onClick={this.copyClipBoardItem}>クリップ</button>
       {this.props.value.isFavorited ?
         <img src={favImage} index={this.props.index} style={this.fav} onClick={this.favAction}/>
       :

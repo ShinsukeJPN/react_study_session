@@ -58,7 +58,7 @@ function deleteReduce(state, action){
 function favoriteReduce(state, action){
   let id = action.index;
   let tweetList = state.tweets.slice();
-  tweetList[id].isFavorited = !tweetList[id].isFavorited
+  tweetList[id].isFavorited = !tweetList[id].isFavorited;
   return {
     tweets: tweetList,
     favList: []
@@ -87,9 +87,15 @@ function clipboardReduce(state, action){
   let text = action.text;
   if(navigator.clipboard){
       navigator.clipboard.writeText(text);
-      return true;
+      return {
+        tweets: state.tweets,
+        mode: 'default'
+      }
   } else {
-      return false;
+      return {
+        tweets: state.tweets,
+        mode: 'default'
+      }
   }
 }
 

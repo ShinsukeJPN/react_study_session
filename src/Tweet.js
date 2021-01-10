@@ -20,12 +20,6 @@ class Tweet extends Component {
         ));
       break;
 
-      case 'favorite':
-        tweets = this.props.tweets.map((value, i)=>(
-          <Item key={n++} value={value} index={i} />
-        ));
-      break;
-
       default:
       tweets = this.props.tweets.map((value, i)=>(
         <Item key={n++} value={value} index={i} />
