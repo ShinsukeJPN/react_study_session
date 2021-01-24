@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import DelButton from './DelButton'
-import { favoriteTweet } from './Store';
 import { clipboardTweet } from './Store'
-import favImage from './images/favorited.png';
-import unFavImage from './images/unfavorited.png';
+import AddFavorite from './AddFavorite';
 
 class Item extends Component{
   fav = {
@@ -24,16 +22,7 @@ class Item extends Component{
 
   constructor(props){
     super(props)
-    this.favAction = this.favAction.bind(this);
     this.copyClipBoardItem = this.copyClipBoardItem.bind(this);
-  }
-
-  favAction(e){
-    let action = favoriteTweet(this.props.index);
-    this.props.dispatch(action);
-    this.state = {
-      index: 0
-    }
   }
 
   copyClipBoardItem(e){
@@ -51,11 +40,7 @@ class Item extends Component{
     <DelButton value="削除" index={this.props.index}/>
     
     <button onClick={this.copyClipBoardItem}>クリップ</button>
-      {this.props.value.isFavorited ?
-        <img src={favImage} index={this.props.index} style={this.fav} onClick={this.favAction}/>
-      :
-        <img src={unFavImage} index={this.props.index} style={this.fav} onClick={this.favAction}/>
-      }
+    <AddFavorite index={this.props.index}/>
     </ul>
     );
   }

@@ -61,6 +61,7 @@ function favoriteReduce(state, action){
   tweetList[id].isFavorited = !tweetList[id].isFavorited;
   return {
     tweets: tweetList,
+    message: "favorited list",
     favList: [],
     mode: 'default'
   }
